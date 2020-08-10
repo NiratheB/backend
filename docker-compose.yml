@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:latest
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+       MYSQL_DATABASE: 'modeler_backend'
+       MYSQL_USER: 'dj_admin'
+       MYSQL_PASSWORD: 'django'
+       MYSQL_ROOT_PASSWORD: 'django'
+  web:
+    restart: always
+    build: .
+    command: "python manage.py runserver 0.0.0.0:8080"
+    volumes:
+      - .:/backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
